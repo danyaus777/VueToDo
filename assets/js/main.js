@@ -18,6 +18,7 @@ Vue.component('task', {
             taskTitle: '',
             newTaskTitle: '',
             newBlockTitle: '',
+            task: [],
         }
     },
     methods: {
@@ -33,13 +34,8 @@ Vue.component('task', {
             this.taskTitle='';
             localStorage.local = JSON.stringify(this.blocknotes)
         },
-        done_task() {
-            this.blocknote_data.tasks = this.blocknote_data.tasks.map(task =>{{
-                    task.completed = !task.completed;
+        save() {
                     localStorage.local = JSON.stringify(this.blocknotes)
-                }
-                return task;
-            })
         },
         del_task(id) {
             this.blocknote_data.tasks.splice(id, 1)
@@ -99,7 +95,7 @@ Vue.component('task', {
                     </div>
                     <div>
                         <button @click="rename(el.taskTitle)" class="btn-delete">✏️</button>
-                        <button @click="done_task()" class="btn-delete">✔️</button>
+                        <button @click="el.completed = !el.completed, save()" class="btn-delete">✔️</button>
                         <button @click="del_task(x)" class="btn-delete">❌</button>
                     </div>
                 </div>
@@ -120,6 +116,7 @@ let app = new Vue({
     data: {
         block_title: '',
         blocknotes: [],
+        todos: []
     },
     mounted() {
         // localStorage.clear();
@@ -128,6 +125,11 @@ let app = new Vue({
         }
     },
     methods: {
+        addinTodos() {
+            this.todos.push({
+                blocknotes: this.blocknotes,
+            })
+        },
        add_blocknote() {
             this.blocknotes.push({
                 block_title: this.block_title,
